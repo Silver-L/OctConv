@@ -1,5 +1,5 @@
 '''
-# imagenet classification
+# cifar100 classification
 # Author: Zhihui Lu
 # Date: 2019/05/13
 '''

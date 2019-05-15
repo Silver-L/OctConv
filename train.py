@@ -1,8 +1,12 @@
+'''
+# cifar100 classification
+# Author: Zhihui Lu
+# Date: 2019/05/15
+'''
+
 import os
 import tensorflow as tf
 import numpy as np
-import random
-import glob
 import utils
 from tqdm import tqdm
 from absl import flags, app
