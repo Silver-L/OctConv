@@ -1,5 +1,5 @@
 '''
-# cifar100 classification (test)
+# cifar10/cifar100 classification (test)
 # Author: Zhihui Lu
 # Date: 2019/05/17
 '''
