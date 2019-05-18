@@ -19,8 +19,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # Surpress verbose warnings
 
 # flag
 FLAGS = flags.FLAGS
-flags.DEFINE_string("model_path", "H:/experiment_result/octconv/octconv_resnet50_0.125/model", "model folder path")
-flags.DEFINE_string("outdir", "H:/experiment_result/octconv/octconv_resnet50_0.125", "output directory")
+flags.DEFINE_string("model_path", "", "model folder path")
+flags.DEFINE_string("outdir", "", "output directory")
 flags.DEFINE_string("gpu_index", "0", "GPU-index")
 flags.DEFINE_string("problem", "cifar10", "dateset(cifar10 or cifar100)")
 flags.DEFINE_integer("batch_size", 64, "batch size")

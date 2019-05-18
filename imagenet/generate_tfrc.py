@@ -16,9 +16,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # Surpress verbose warnings
 
 # flag
 FLAGS = flags.FLAGS
-flags.DEFINE_string("data_indir", "/mnt/user/data/imagenet/image/val", "data directory")
-flags.DEFINE_string("data_list_path", "H:/data_set/image/imagenet/validation_label.txt", "data list path (.txt)")
-flags.DEFINE_string("outdir", "H:/data_set/tfrecord/imagenet/tiger/val", "output directory")
+flags.DEFINE_string("data_indir", "", "data directory")
+flags.DEFINE_string("data_list_path", "", "data list path (.txt)")
+flags.DEFINE_string("outdir", "", "output directory")
 flags.DEFINE_integer("num_per_tfrecord", 1000, "number per tfrecord")
 flags.DEFINE_bool("is_shuffle", True, "shuffle or not")
 

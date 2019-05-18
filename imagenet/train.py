@@ -15,8 +15,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # Surpress verbose warnings
 
 # flag
 FLAGS = flags.FLAGS
-flags.DEFINE_string("indir", "H:/data_set/tfrecord/imagenet/train", "tfrecord(train) directory")
-flags.DEFINE_string("outdir", "H:/experiment_result/octconv/normal_resnet50", "output directory")
+flags.DEFINE_string("indir", "", "tfrecord(train) directory")
+flags.DEFINE_string("outdir", "", "output directory")
 flags.DEFINE_string("gpu_index", "0", "GPU-index")
 flags.DEFINE_integer("shuffle_buffer_size", 1024, "buffer size of shuffle")
 flags.DEFINE_integer("batch_size", 64, "batch size")
