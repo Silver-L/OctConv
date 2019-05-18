@@ -137,6 +137,9 @@ def normal_resnet50(x, alpha, num_class, is_training=True):
 
     return output
 
+'''
+Reference: https://github.com/taki0112/ResNet-Tensorflow
+'''
 def normal_resblock(x_init, channels, is_training=True, downsample=False, scope='bottle_resblock'):
     with tf.variable_scope(scope) :
         x = batch_norm(x_init, is_training, scope='batch_norm_1x1_front')
