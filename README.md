@@ -3,3 +3,5 @@
 
 
 ## Architecture of OctConv
+<img src="https://github.com/Silver-L/OctConv/blob/master/result/octconv.png"/>
+
