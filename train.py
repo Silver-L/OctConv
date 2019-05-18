@@ -19,8 +19,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # Surpress verbose warnings
 
 # flag
 FLAGS = flags.FLAGS
-flags.DEFINE_string("outdir", "H:/experiment_result/octconv/octconv_resnet50_0.125", "output directory")
+flags.DEFINE_string("outdir", "H:/experiment_result/octconv/test", "output directory")
 flags.DEFINE_string("gpu_index", "0", "GPU-index")
+flags.DEFINE_string("problem", "cifar100", "dateset(cifar10 or cifar100)")
 flags.DEFINE_integer("batch_size", 256, "batch size")
 flags.DEFINE_integer("epoch", 200, "number of epoch")
 flags.DEFINE_float("alpha", 0.125, "hyperparameter of octconv")
@@ -28,6 +29,7 @@ flags.DEFINE_list("image_size", [32, 32, 3], "image size")
 flags.DEFINE_bool("is_octconv", True, "is octconv")
 
 def main(argv):
+
     # turn off log message
     tf.logging.set_verbosity(tf.logging.WARN)
 
@@ -39,7 +41,13 @@ def main(argv):
 
 
     # load train data(cifar10, class: 10)
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar100.load_data(label_mode='fine')
+    if FLAGS.problem == 'cifar10':
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+        num_class = 10
+    # load train data(cifar100, class: 100)
+    if FLAGS.problem == 'cifar100':
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar100.load_data(label_mode='fine')
+        num_class = 100
 
     # preprocess
     train_gen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1.0/255, horizontal_flip=True,
@@ -65,6 +73,7 @@ def main(argv):
             'input_size': FLAGS.image_size,
             'alpha': FLAGS.alpha,
             'network': network,
+            'num_class': num_class,
             'is_training':True,
             'learning_rate': 1e-4
         }
@@ -92,8 +101,7 @@ def main(argv):
             for iter in range(x_train.shape[0]//FLAGS.batch_size):
                 train_data_batch = next(train_data_shuffled)
 
-                label = tf.keras.utils.to_categorical(train_data_batch[1], num_classes=100)
-
+                label = tf.keras.utils.to_categorical(train_data_batch[1], num_classes=num_class)
 
                 # training
                 train_loss = Model.update(train_data_batch[0], label)

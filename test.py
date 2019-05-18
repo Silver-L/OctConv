@@ -22,6 +22,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_string("model_path", "H:/experiment_result/octconv/octconv_resnet50_0.125/model", "model folder path")
 flags.DEFINE_string("outdir", "H:/experiment_result/octconv/octconv_resnet50_0.125", "output directory")
 flags.DEFINE_string("gpu_index", "0", "GPU-index")
+flags.DEFINE_string("problem", "cifar10", "dateset(cifar10 or cifar100)")
 flags.DEFINE_integer("batch_size", 64, "batch size")
 flags.DEFINE_integer("epoch", 200, "number of epoch")
 flags.DEFINE_float("alpha", 0.125, "hyperparameter of octconv")
@@ -37,8 +38,14 @@ def main(argv):
     if not (os.path.exists(os.path.join(FLAGS.outdir, 'tensorboard'))):
         os.makedirs(os.path.join(FLAGS.outdir, 'tensorboard'))
 
+    # load train data(cifar10, class: 10)
+    if FLAGS.problem == 'cifar10':
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+        num_class = 10
     # load train data(cifar100, class: 100)
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar100.load_data(label_mode='fine')
+    if FLAGS.problem == 'cifar100':
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar100.load_data(label_mode='fine')
+        num_class = 100
 
     # preprocess
     test_gen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1.0/255)
@@ -61,6 +68,7 @@ def main(argv):
             'input_size': FLAGS.image_size,
             'alpha': FLAGS.alpha,
             'network': network,
+            'num_class': num_class,
             'is_training':False,
             'learning_rate': 1e-4
         }
@@ -82,14 +90,14 @@ def main(argv):
         tbar = tqdm(range(FLAGS.epoch), ascii=True)
         epoch_acc = []
         for i in tbar:
-            test_data = test_gen.flow(x_train, y_train, FLAGS.batch_size, shuffle=False)
+            test_data = test_gen.flow(x_test, y_test, FLAGS.batch_size, shuffle=False)
 
             # one epoch
             Model.restore_model(FLAGS.model_path + '/model_{}'.format(i))
             for iter in range(x_test.shape[0]//FLAGS.batch_size):
                 train_data_batch = next(test_data)
 
-                label = tf.keras.utils.to_categorical(train_data_batch[1], num_classes=100)
+                label = tf.keras.utils.to_categorical(train_data_batch[1], num_classes=num_class)
 
                 test_acc = Model.test(train_data_batch[0], label)
                 epoch_acc.append(np.mean(test_acc))

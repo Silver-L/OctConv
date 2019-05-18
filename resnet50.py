@@ -8,7 +8,7 @@ import tensorflow as tf
 from octconv_2d import OctConv2D
 
 
-def octconv_resnet50(x, alpha, is_training=True):
+def octconv_resnet50(x, alpha, num_class, is_training=True):
     residual_list = [3, 4, 6, 3]
 
     high = x
@@ -61,7 +61,7 @@ def octconv_resnet50(x, alpha, is_training=True):
 
     # FC
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
-    output = tf.keras.layers.Dense(units=100, activation='softmax')(x)
+    output = tf.keras.layers.Dense(units=num_class, activation='softmax')(x)
 
     return output
 
@@ -101,7 +101,7 @@ def octconv_resblock(x_init, channels, alpha, index, is_training=True, scope='oc
 
     return [high, low]
 
-def normal_resnet50(x, alpha, is_training=True):
+def normal_resnet50(x, alpha, num_class, is_training=True):
     residual_list = [3, 4, 6, 3]
 
     # conv1
@@ -133,7 +133,7 @@ def normal_resnet50(x, alpha, is_training=True):
         x = normal_resblock(x, channels=512, is_training=is_training, scope='resblock5_' + str(i))
 
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
-    output = tf.keras.layers.Dense(units=100, activation='softmax')(x)
+    output = tf.keras.layers.Dense(units=num_class, activation='softmax')(x)
 
     return output
 
