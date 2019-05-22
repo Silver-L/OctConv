@@ -37,12 +37,17 @@ Training loss \
 Test accuracy \
 <img src="https://github.com/Silver-L/OctConv/blob/master/result/test_accuracy.png" width="800" height="300" alt="error"/>
 
-|               | alpha | Parameters        | Test accuracy |
-| --------------|:-----:|:-----------------:|:-------------:|
-| Normal Resnet |0      | 38,103,690(100%)  |     84.11%    |
-| OctConv-Resnet|0.125  | 24,581,898(64.5%) |  ***85.36%*** |
-| OctConv-Resnet|0.25   | 24,581,898(64.5%) |     84.83%    |
-| OctConv-Resnet|0.5    | 24,581,898(64.5%) |     82.48%    |
+|               | Parameters       |
+| --------------|:----------------:|
+| Normal Resnet |38,103,690(100%)  |
+| OctConv-Resnet|38,103,690(64.5%)  |
+
+|               | alpha | Test accuracy |
+| --------------|:-----:|:-------------:|
+| Normal Resnet |0      |     84.11%    |
+| OctConv-Resnet|0.125  |  ***85.36%*** |
+| OctConv-Resnet|0.25   |     84.83%    |
+| OctConv-Resnet|0.5    |     82.48%    |
 
 ## Reference
 ```
