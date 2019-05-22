@@ -32,10 +32,10 @@ python train.py --is_octconv=true
 ### Dataset: CIFAR-10
 
 Training loss \
-<img src="https://github.com/Silver-L/OctConv/blob/master/result/train_loss.png" width="800" height="300" alt="error"/>
+<img src="https://github.com/Silver-L/OctConv/blob/master/result/train_loss.png" width="600" height="300" alt="error"/>
 
 Test accuracy \
-<img src="https://github.com/Silver-L/OctConv/blob/master/result/test_accuracy.png" width="800" height="300" alt="error"/>
+<img src="https://github.com/Silver-L/OctConv/blob/master/result/test_accuracy.png" width="600" height="300" alt="error"/>
 
 |               | Parameters       |
 | --------------|:----------------:|
