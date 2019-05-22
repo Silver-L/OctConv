@@ -19,7 +19,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # Surpress verbose warnings
 
 # flag
 FLAGS = flags.FLAGS
-flags.DEFINE_string("outdir", "H:/experiment_result/octconv/test", "output directory")
+flags.DEFINE_string("outdir", "", "output directory")
 flags.DEFINE_string("gpu_index", "0", "GPU-index")
 flags.DEFINE_string("problem", "cifar100", "dateset(cifar10 or cifar100)")
 flags.DEFINE_integer("batch_size", 256, "batch size")
