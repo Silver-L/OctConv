@@ -93,8 +93,10 @@ def octconv_resblock(x_init, channels, alpha, index, is_training=True, scope='oc
         high, low = OctConv2D(filters=channels * 4, kernel_size=(1, 1), strides=(1, 1), alpha=alpha)([high, low])
 
         if index == 0:
-            shortcut_high = tf.keras.layers.Conv2D(int(channels * 4 * (1 - alpha)), kernel_size=1, strides=1, padding='same')(shortcut_high)
-            shortcut_low = tf.keras.layers.Conv2D(int(channels * 4 * alpha), kernel_size=1, strides=1, padding='same')(shortcut_low)
+            shortcut_high, shortcut_low = OctConv2D(filters=channels * 4, kernel_size=(1,1), strides=(1, 1), padding='same',
+                                                    alpha=alpha)([shortcut_high, shortcut_low])
+            # shortcut_high = tf.keras.layers.Conv2D(int(channels * 4 * (1 - alpha)), kernel_size=1, strides=1, padding='same')(shortcut_high)
+            # shortcut_low = tf.keras.layers.Conv2D(int(channels * 4 * alpha), kernel_size=1, strides=1, padding='same')(shortcut_low)
 
         high = tf.keras.layers.add([high, shortcut_high])
         low = tf.keras.layers.add([low, shortcut_low])
