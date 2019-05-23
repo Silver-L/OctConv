@@ -40,7 +40,7 @@ Test accuracy \
 |               | Parameters       |
 | --------------|:----------------:|
 | Normal Resnet |38,103,690(100%)  |
-| OctConv-Resnet|38,103,690(64.5%)  |
+| OctConv-Resnet|24,628,068(64.5%)  |
 
 |               | alpha | Test accuracy |
 | --------------|:-----:|:-------------:|
