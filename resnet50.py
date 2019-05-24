@@ -7,7 +7,6 @@
 import tensorflow as tf
 from octconv_2d import OctConv2D
 
-
 def octconv_resnet50(x, alpha, num_class, is_training=True):
     residual_list = [3, 4, 6, 3]
 
@@ -167,7 +166,4 @@ def normal_resblock(x_init, channels, is_training=True, downsample=False, scope=
 
 
 def batch_norm(x, is_training=True):
-    layer = tf.keras.layers.BatchNormalization(epsilon=1e-05, center=True, scale=True, trainable=is_training)
-    if not is_training:
-        layer.trainable = False
-    return layer(x)
+    return tf.layers.batch_normalization(x, epsilon=1e-05, center=True, scale=True, fused=True, training=is_training)
