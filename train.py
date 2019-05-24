@@ -31,7 +31,7 @@ flags.DEFINE_bool("is_octconv", True, "is octconv")
 def main(argv):
 
     # turn off log message
-    tf.logging.set_verbosity(tf.logging.WARN)
+    tf.logging.set_verbosity(tf.logging.FATAL)
 
     # check folder
     if not (os.path.exists(os.path.join(FLAGS.outdir, 'tensorboard'))):

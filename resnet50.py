@@ -16,13 +16,13 @@ def octconv_resnet50(x, alpha, num_class, is_training=True):
 
     # conv1 high
     high = tf.keras.layers.Conv2D(filters=64, kernel_size=7, strides=2, padding='same')(high)
-    high = batch_norm(high, is_training=is_training, scope='batch_norm_first_layer_high')
+    high = batch_norm(high, is_training=is_training)
     high = tf.nn.relu(high)
     high = tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')(high)
 
     # conv1 low
     low = tf.keras.layers.Conv2D(filters=64, kernel_size=7, strides=2, padding='same')(low)
-    low = batch_norm(low, is_training=is_training, scope='batch_norm_first_layer_low')
+    low = batch_norm(low, is_training=is_training)
     low = tf.nn.relu(low)
     low = tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')(low)
 
@@ -56,7 +56,7 @@ def octconv_resnet50(x, alpha, num_class, is_training=True):
     high = tf.keras.layers.AveragePooling2D(pool_size=(2,2))(high)
     x = tf.keras.layers.concatenate([high, low])
     x = tf.keras.layers.Conv2D(filters=512, kernel_size=(1,1), strides=(1,1))(x)
-    x = batch_norm(x, is_training, scope='batch_norm_last_layer')
+    x = batch_norm(x, is_training)
     x = tf.nn.relu(x)
 
     # FC
@@ -70,25 +70,25 @@ def octconv_resblock(x_init, channels, alpha, index, is_training=True, scope='oc
     with tf.variable_scope(scope) :
         high, low = x_init[0], x_init[1]
 
-        high = batch_norm(high, is_training, scope='batch_norm_1x1_front_high')
+        high = batch_norm(high, is_training)
         shortcut_high = tf.nn.relu(high)
 
-        low = batch_norm(low, is_training, scope='batch_norm_1x1_front_low')
+        low = batch_norm(low, is_training)
         shortcut_low = tf.nn.relu(low)
 
 
         high, low = OctConv2D(filters=channels, kernel_size=(1, 1), strides=(1, 1),
                               alpha=alpha)([shortcut_high, shortcut_low])
-        high = batch_norm(high, is_training, scope='batch_norm_3x3_high')
+        high = batch_norm(high, is_training)
         high = tf.nn.relu(high)
-        low = batch_norm(low, is_training, scope='batch_norm_3x3_low')
+        low = batch_norm(low, is_training)
         low = tf.nn.relu(low)
 
         high, low = OctConv2D(filters=channels, kernel_size=(3, 3), strides=(1, 1), alpha=alpha)([high, low])
 
-        high = batch_norm(high, is_training, scope='batch_norm_1x1_back_high')
+        high = batch_norm(high, is_training)
         high = tf.nn.relu(high)
-        low = batch_norm(low, is_training, scope='batch_nrom_1x1_back_low')
+        low = batch_norm(low, is_training)
         low = tf.nn.relu(low)
         high, low = OctConv2D(filters=channels * 4, kernel_size=(1, 1), strides=(1, 1), alpha=alpha)([high, low])
 
@@ -108,7 +108,7 @@ def normal_resnet50(x, alpha, num_class, is_training=True):
 
     # conv1
     x = tf.keras.layers.Conv2D(filters=64, kernel_size=7, strides=2, padding='same')(x)
-    x = batch_norm(x, is_training=is_training, scope='batch_norm_first_layer')
+    x = batch_norm(x, is_training=is_training)
     x = tf.nn.relu(x)
     x = tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')(x)
 
@@ -144,11 +144,11 @@ Reference: https://github.com/taki0112/ResNet-Tensorflow
 '''
 def normal_resblock(x_init, channels, is_training=True, downsample=False, scope='bottle_resblock'):
     with tf.variable_scope(scope) :
-        x = batch_norm(x_init, is_training, scope='batch_norm_1x1_front')
+        x = batch_norm(x_init, is_training)
         shortcut = tf.nn.relu(x)
 
         x = tf.keras.layers.Conv2D(channels, kernel_size=1, strides=1, padding='same')(shortcut)
-        x = batch_norm(x, is_training, scope='batch_norm_3x3')
+        x = batch_norm(x, is_training)
         x = tf.nn.relu(x)
 
         if downsample :
@@ -159,14 +159,15 @@ def normal_resblock(x_init, channels, is_training=True, downsample=False, scope=
             x = tf.keras.layers.Conv2D(channels, kernel_size=3, strides=1, padding='same')(x)
             shortcut = tf.keras.layers.Conv2D(channels * 4, kernel_size=1, strides=1, padding='same')(shortcut)
 
-        x = batch_norm(x, is_training, scope='batch_norm_1x1_back')
+        x = batch_norm(x, is_training)
         x = tf.nn.relu(x)
         x = tf.keras.layers.Conv2D(channels*4, kernel_size=1, strides=1, padding='same')(x)
 
         return x + shortcut
 
 
-def batch_norm(x, is_training=True, scope='batch_norm'):
-    return tf.contrib.layers.batch_norm(x, decay=0.9, epsilon=1e-05,
-                                        center=True, scale=True, updates_collections=None,
-                                        is_training=is_training, scope=scope)
+def batch_norm(x, is_training=True):
+    layer = tf.keras.layers.BatchNormalization(epsilon=1e-05, center=True, scale=True, trainable=is_training)
+    if not is_training:
+        layer.trainable = False
+    return layer(x)

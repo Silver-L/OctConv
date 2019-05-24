@@ -8,6 +8,10 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import tensorflow.keras.backend as K
 
+# # for pycharm
+# from tensorflow._api.v1.keras import layers
+# import tensorflow._api.v1.keras.backend as K
+
 
 class OctConv2D(layers.Layer):
     def __init__(self, filters, alpha, kernel_size=(3, 3), strides=(1, 1),
