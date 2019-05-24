@@ -5,7 +5,7 @@ Y. Chen, H. Fang, B. Xu, Z. Yan, Y. Kalantidis, M. Rohrbach, S. Yan, J. Feng. Dr
 
 ## Requirment
 ```
-1. Tensorflow==1.10.0
+1. Tensorflow==1.13.1
 2. tqdm
 ```
 
