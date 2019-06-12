@@ -75,7 +75,7 @@ def main(argv):
             'network': network,
             'num_class': num_class,
             'is_training':True,
-            'learning_rate': 1e-4
+            'learning_rate': 1e-3
         }
 
         Model = resnet_model(**kwargs)

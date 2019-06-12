@@ -166,4 +166,6 @@ def normal_resblock(x_init, channels, is_training=True, downsample=False, scope=
 
 
 def batch_norm(x, is_training=True):
-    return tf.layers.batch_normalization(x, epsilon=1e-05, center=True, scale=True, fused=True, training=is_training)
+    return tf.contrib.layers.batch_norm(x, decay=0.9, epsilon=1e-05,
+                                        center=True, scale=True, updates_collections=None,
+                                        is_training=is_training)
