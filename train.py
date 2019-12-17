@@ -19,7 +19,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # Surpress verbose warnings
 
 # flag
 FLAGS = flags.FLAGS
-flags.DEFINE_string("outdir", "", "output directory")
+flags.DEFINE_string("outdir", "./", "output directory")
 flags.DEFINE_string("gpu_index", "0", "GPU-index")
 flags.DEFINE_string("problem", "cifar100", "dateset(cifar10 or cifar100)")
 flags.DEFINE_integer("batch_size", 256, "batch size")
@@ -31,7 +31,7 @@ flags.DEFINE_bool("is_octconv", True, "is octconv")
 def main(argv):
 
     # turn off log message
-    tf.logging.set_verbosity(tf.logging.FATAL)
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.FATAL)
 
     # check folder
     if not (os.path.exists(os.path.join(FLAGS.outdir, 'tensorboard'))):

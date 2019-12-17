@@ -28,25 +28,24 @@ class resnet_model(object):
                                                             self._input_size[1], self._input_size[2]])
             self._label_onehot = tf.placeholder(tf.float32, shape=[None, self._num_class])
 
+        with tf.variable_scope('classify'):
+            self._result = self._network(self._input, self._alpha, self._num_class, self._is_training)
 
-            with tf.variable_scope('classify'):
-                self._result = self._network(self._input, self._alpha, self._num_class, self._is_training)
+        with tf.variable_scope('loss'):
+            self._loss = self.train_loss(self._label_onehot, self._result)
 
-            with tf.variable_scope('loss'):
-                self._loss = self.train_loss(self._label_onehot, self._result)
+        with tf.variable_scope('acc'):
+            self._acc = self.test_acc(self._label_onehot, self._result, k=1)
 
-            with tf.variable_scope('acc'):
-                self._acc = self.test_acc(self._label_onehot, self._result, k=1)
+        with tf.variable_scope('optimizer'):
+            optimizer = tf.train.AdamOptimizer(learning_rate=self._lr, beta1=0.5, beta2=0.9)
 
-            with tf.variable_scope('optimizer'):
-                optimizer = tf.train.AdamOptimizer(learning_rate=self._lr, beta1=0.5, beta2=0.9)
+        with tf.variable_scope('training-step'):
+            self._train = optimizer.minimize(self._loss)
 
-            with tf.variable_scope('training-step'):
-                self._train = optimizer.minimize(self._loss)
-
-            self.saver = tf.train.Saver(max_to_keep=None)
-            init = tf.initializers.global_variables()
-            self._sess.run(init)
+        self.saver = tf.train.Saver(max_to_keep=None)
+        init = tf.initializers.global_variables()
+        self._sess.run(init)
 
     @staticmethod
     def train_loss(ground_truth, pred):
